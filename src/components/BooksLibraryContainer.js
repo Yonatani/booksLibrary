@@ -1,11 +1,12 @@
 import React from 'react'
-import { getBooks } from '../actions/books'
+import { getBooks, createOrEditBook } from '../actions/books'
 import { connect } from 'react-redux'
 import BooksLibrary from '../components/BooksLibrary'
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getBooks: () => dispatch(getBooks())
+    getBooks: () => dispatch(getBooks()),
+    createOrEditBook: (book) => dispatch(createOrEditBook(book))
   }
 }
 

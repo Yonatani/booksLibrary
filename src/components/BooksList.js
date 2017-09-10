@@ -12,7 +12,6 @@ const styles = {
   },
   gridList: {
     width: '75%',
-    height: 450,
     overflowY: 'auto',
   },
 };
@@ -29,7 +28,7 @@ const BooksList = ({ books, editBook }) => (
           key={book.id}
           title={book.title}
           subtitle={<span>by <b>{book.author}</b></span>}
-          actionIcon={<FlatButton label="Edit" hoverColor="transparent" primary={true} onClick={(book) =>
+          actionIcon={<FlatButton label="Edit" hoverColor="transparent" primary={true} onClick={() =>
             editBook(book)}/>}
         >
           <img src={book.coverUrl} />

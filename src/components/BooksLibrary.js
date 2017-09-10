@@ -8,7 +8,7 @@ import Header from './Header';
 import EditBook from './EditBook';
 import BooksList from './BooksList';
 
-const emptyBook = {
+export const emptyBook = {
   id: -1,
   author: '',
   date: Date.now(),
@@ -22,6 +22,8 @@ class BooksLibrary extends Component {
     super(props);
     this.editBook = this.editBook.bind(this);
     this.handleClose = this.handleClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.editBookDetail = this.editBookDetail.bind(this);
     this.state = {
       showModal: false,
       editableBook: emptyBook
@@ -29,8 +31,6 @@ class BooksLibrary extends Component {
   }
 
   componentWillMount() {
-    //const visits = parseInt(getCookie('visits'));
-    //this.setState({isLoading: false, visits: visits})
     this.props.getBooks();
   }
 
@@ -38,12 +38,24 @@ class BooksLibrary extends Component {
     this.setState({showModal: true, editableBook: book})
   }
 
+  editBookDetail(value, key) {
+    this.setState({editableBook: {
+      ...this.state.editableBook,
+      [key]: value
+    }})
+  }
+
   handleClose = () => {
     this.setState({showModal: false});
   };
 
+  handleSubmit = () => {
+    this.props.createOrEditBook(this.state.editableBook)
+  }
+
   render() {
     const {books} = this.props
+    const {editableBook} = this.state
     const actions = [
       <FlatButton
         label="Cancel"
@@ -53,13 +65,12 @@ class BooksLibrary extends Component {
       <FlatButton
         label="Submit"
         primary={true}
-        disabled={true}
-        onClick={this.handleClose}
+        onClick={this.handleSubmit}
       />,
     ];
     return (
-      <div>
-        <Header text={'Books Library'}/>
+      <div style={{ width: '75%'}}>
+        <Header text={'Books Library'} addBook={this.editBook}/>
         {books.length > 0 ? <BooksList books={books} editBook={this.editBook}/> : null}
         <Dialog
           title="Dialog With Actions"
@@ -67,7 +78,7 @@ class BooksLibrary extends Component {
           modal={true}
           open={this.state.showModal}
         >
-          <EditBook />
+          <EditBook {...editableBook} editBook={this.editBookDetail}/>
         </Dialog>
       </div>
     );
