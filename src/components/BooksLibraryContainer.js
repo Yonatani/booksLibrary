@@ -1,17 +1,17 @@
 import React from 'react'
-import { getBooks, createOrEditBook } from '../actions/books'
+import { getBooks, createOrEditBook, deleteBook } from '../actions/books'
 import { connect } from 'react-redux'
 import BooksLibrary from '../components/BooksLibrary'
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getBooks: () => dispatch(getBooks()),
-    createOrEditBook: (book) => dispatch(createOrEditBook(book))
+    createOrEditBook: (book) => dispatch(createOrEditBook(book)),
+    deleteBook: (bookId) => dispatch(deleteBook(bookId))
   }
 }
 
 const mapStateToProps = state => {
-  console.log('state',state)
   return {
     books: state.books
   }

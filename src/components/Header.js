@@ -2,14 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { emptyBook } from './BooksLibrary'
+import { emptyBook } from './BooksLibrary';
+import './HeaderStyle.scss'
+
 const Header = ({ text, addBook }) => (
-  <div style={{display: 'flex', backgroundColor: '#4286f4', height: 80, marginRight: 15, marginLeft: 15, marginBottom: 20, justifyContent: 'space-around' }}>
+  <div className="container">
     <h1
       style={{
-        textAlign: 'left',
-        color: 'white',
-        marginLeft: 30
+
       }}
     >
       {text}

@@ -43,7 +43,7 @@ const books = [
     title: 'A turtles life',
     coverUrl: 'http://www.cbr.com/wp-content/uploads/2017/01/the-flash-barry-allen-cw.jpg'
   },
-]
+];
 
 class BooksService {
    static getBooks = () => {

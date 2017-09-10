@@ -7,11 +7,12 @@ import PropTypes from 'prop-types';
 import Header from './Header';
 import EditBook from './EditBook';
 import BooksList from './BooksList';
+import _ from 'lodash';
 
 export const emptyBook = {
   id: -1,
   author: '',
-  date: Date.now(),
+  date: {},
   title: '',
   coverUrl: ''
 }
@@ -24,9 +25,11 @@ class BooksLibrary extends Component {
     this.handleClose = this.handleClose.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.editBookDetail = this.editBookDetail.bind(this);
+    this.checkEditableBookParams = this.checkEditableBookParams.bind(this);
     this.state = {
       showModal: false,
-      editableBook: emptyBook
+      editableBook: emptyBook,
+      validatedForm: false
     }
   }
 
@@ -42,7 +45,9 @@ class BooksLibrary extends Component {
     this.setState({editableBook: {
       ...this.state.editableBook,
       [key]: value
-    }})
+    }}, () => {
+      this.checkEditableBookParams()
+    })
   }
 
   handleClose = () => {
@@ -50,12 +55,21 @@ class BooksLibrary extends Component {
   };
 
   handleSubmit = () => {
-    this.props.createOrEditBook(this.state.editableBook)
+    if(this.state.validatedForm){
+      this.props.createOrEditBook(this.state.editableBook);
+    }
+  }
+
+  checkEditableBookParams() {
+    const {author, title, coverUrl, date} = this.state.editableBook;
+    if(author.length > 0 && title.length > 0 && coverUrl.length > 0 && date instanceof Date) {
+      this.setState({validatedForm: true})
+    }
   }
 
   render() {
-    const {books} = this.props
-    const {editableBook} = this.state
+    const {books, deleteBook} = this.props
+    const {editableBook, validatedForm} = this.state
     const actions = [
       <FlatButton
         label="Cancel"
@@ -65,6 +79,7 @@ class BooksLibrary extends Component {
       <FlatButton
         label="Submit"
         primary={true}
+        disabled={!validatedForm}
         onClick={this.handleSubmit}
       />,
     ];
@@ -78,7 +93,7 @@ class BooksLibrary extends Component {
           modal={true}
           open={this.state.showModal}
         >
-          <EditBook {...editableBook} editBook={this.editBookDetail}/>
+          <EditBook {...editableBook} editBook={this.editBookDetail} deleteBook={(bookId) => deleteBook(bookId)}/>
         </Dialog>
       </div>
     );
