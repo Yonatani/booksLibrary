@@ -57,6 +57,7 @@ class BooksLibrary extends Component {
   handleSubmit = () => {
     if(this.state.validatedForm){
       this.props.createOrEditBook(this.state.editableBook);
+      this.handleClose()
     }
   }
 
@@ -65,6 +66,11 @@ class BooksLibrary extends Component {
     if(author.length > 0 && title.length > 0 && coverUrl.length > 0 && date instanceof Date) {
       this.setState({validatedForm: true})
     }
+  }
+
+  toTitleCase(str) {
+    let onlyLetters = str.replace(/[^a-zA-Z0-9]/g,' ');
+    return onlyLetters.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
   }
 
   render() {
@@ -86,7 +92,7 @@ class BooksLibrary extends Component {
     return (
       <div style={{ width: '75%'}}>
         <Header text={'Books Library'} addBook={this.editBook}/>
-        {books.length > 0 ? <BooksList books={books} editBook={this.editBook}/> : null}
+        {books.length > 0 ? <BooksList books={books} editBook={this.editBook} toTitleCase={this.toTitleCase}/> : null}
         <Dialog
           title="Dialog With Actions"
           actions={actions}

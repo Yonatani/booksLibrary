@@ -16,7 +16,7 @@ const styles = {
   },
 };
 
-const BooksList = ({ books, editBook }) => (
+const BooksList = ({ books, editBook, toTitleCase }) => (
   <div style={styles.root}>
     <GridList
       cols={3}
@@ -28,7 +28,7 @@ const BooksList = ({ books, editBook }) => (
         <GridTile
           style={{marginTop: 5, padding: 0}}
           key={book.id}
-          title={book.title}
+          title={toTitleCase(book.title)}
           subtitle={<span>by <b>{book.author}</b></span>}
           actionIcon={<FlatButton label="Edit" hoverColor="transparent" primary={true} onClick={() =>
             editBook(book)}/>}
