@@ -1,0 +1,18 @@
+.bookListContainer {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.gridList{
+  width: 100%;
+  overflow-y: auto;
+}
+
+.gridTile {
+  padding: 0
+}
+
+.bookImage {
+  padding: 0;
+  margin: 0;
+}

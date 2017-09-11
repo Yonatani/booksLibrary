@@ -1,4 +1,4 @@
-.container {
+.headerContainer {
   display: flex;
   background-color: #4286f4;
   height: 80px;
@@ -7,7 +7,15 @@
   justify-content: space-between;
 }
 
+.addBookBtnContainer{
+  align-self: center
+}
+
 h1 {
   text-align: left;
   color: #ffffff;
+}
+
+.booksLibraryContainer {
+  width: 75%
 }

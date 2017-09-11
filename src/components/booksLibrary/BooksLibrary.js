@@ -1,13 +1,11 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
 import PropTypes from 'prop-types';
 import Header from './Header';
-import EditBook from './EditBook';
-import BooksList from './BooksList';
-import _ from 'lodash';
+import EditBook from '../editBook/EditBook';
+import BooksList from '../booksList/BooksList';
+import './headerStyle.scss';
 
 export const emptyBook = {
   id: -1,
@@ -15,7 +13,7 @@ export const emptyBook = {
   date: {},
   title: '',
   coverUrl: ''
-}
+};
 
 class BooksLibrary extends Component {
 
@@ -26,11 +24,12 @@ class BooksLibrary extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.editBookDetail = this.editBookDetail.bind(this);
     this.checkEditableBookParams = this.checkEditableBookParams.bind(this);
+    this.deleteEditableBook = this.deleteEditableBook.bind(this);
     this.state = {
       showModal: false,
       editableBook: emptyBook,
       validatedForm: false
-    }
+    };
   }
 
   componentWillMount() {
@@ -38,7 +37,7 @@ class BooksLibrary extends Component {
   }
 
   editBook(book) {
-    this.setState({showModal: true, editableBook: book})
+    this.setState({showModal: true, editableBook: book});
   }
 
   editBookDetail(value, key) {
@@ -46,8 +45,8 @@ class BooksLibrary extends Component {
       ...this.state.editableBook,
       [key]: value
     }}, () => {
-      this.checkEditableBookParams()
-    })
+      this.checkEditableBookParams();
+    });
   }
 
   handleClose = () => {
@@ -57,14 +56,14 @@ class BooksLibrary extends Component {
   handleSubmit = () => {
     if(this.state.validatedForm){
       this.props.createOrEditBook(this.state.editableBook);
-      this.handleClose()
+      this.handleClose();
     }
   }
 
   checkEditableBookParams() {
     const {author, title, coverUrl, date} = this.state.editableBook;
     if(author.length > 0 && title.length > 0 && coverUrl.length > 0 && date instanceof Date) {
-      this.setState({validatedForm: true})
+      this.setState({validatedForm: true});
     }
   }
 
@@ -73,9 +72,15 @@ class BooksLibrary extends Component {
     return onlyLetters.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
   }
 
+  deleteEditableBook() {
+    const {editableBook} = this.state;
+    this.props.deleteBook(editableBook.id);
+    this.handleClose();
+  }
+
   render() {
-    const {books, deleteBook} = this.props
-    const {editableBook, validatedForm} = this.state
+    const {books} = this.props;
+    const {editableBook, validatedForm} = this.state;
     const actions = [
       <FlatButton
         label="Cancel"
@@ -90,16 +95,16 @@ class BooksLibrary extends Component {
       />,
     ];
     return (
-      <div style={{ width: '75%'}}>
+      <div className="booksLibraryContainer">
         <Header text={'Books Library'} addBook={this.editBook}/>
-        {books.length > 0 ? <BooksList books={books} editBook={this.editBook} toTitleCase={this.toTitleCase}/> : null}
+        <BooksList books={books} editBook={this.editBook} toTitleCase={this.toTitleCase}/>
         <Dialog
           title="Dialog With Actions"
           actions={actions}
           modal={true}
           open={this.state.showModal}
         >
-          <EditBook {...editableBook} editBook={this.editBookDetail} deleteBook={(bookId) => deleteBook(bookId)}/>
+          <EditBook {...editableBook} editBook={this.editBookDetail} deleteBook={this.deleteEditableBook}/>
         </Dialog>
       </div>
     );
@@ -107,7 +112,10 @@ class BooksLibrary extends Component {
 }
 
 BooksLibrary.propTypes = {
-  text: PropTypes.string.isRequired
+  books: PropTypes.array.isRequired,
+  getBooks: PropTypes.func.isRequired,
+  deleteBook: PropTypes.func.isRequired,
+  createOrEditBook: PropTypes.func.isRequired
 };
 
 export default BooksLibrary;

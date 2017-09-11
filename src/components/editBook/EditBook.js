@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import DatePicker from 'material-ui/DatePicker';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
-import FlatButton from 'material-ui/FlatButton';
+import './editBookStyle.scss';
+import DeleteButton from './DeleteButton';
 
 class EditBook extends Component {
 
@@ -13,7 +14,7 @@ class EditBook extends Component {
   render() {
     const {author, title, coverUrl, date, editBook, id, deleteBook} = this.props;
     return (
-      <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+      <div className="editBookContainer">
         <div>
           <TextField
             hintText="Author"
@@ -41,12 +42,11 @@ class EditBook extends Component {
             container="inline"
             value={date}
             onChange={(event, value) => editBook(value, 'date')}
-            errorText={ date instanceof Date ? null : "This field is required"}/>
-          <FlatButton labelStyle={{paddingLeft: 0}} label="DELETE BOOK" hoverColor="transparent" secondary={true} onClick={() =>
-            deleteBook(id)}/>
+            errorText={date instanceof Date ? null : "This field is required"}/>
+          {id === -1 ? null : <DeleteButton deleteBook={deleteBook} />}
         </div>
-        <div style={{padding: 20}}>
-          <img src={coverUrl} style={{width: '100%'}}/>
+        <div className="imageContainer" >
+          <img src={coverUrl}/>
           <br />
         </div>
       </div>
@@ -56,6 +56,8 @@ class EditBook extends Component {
 
 EditBook.propTypes = {
   editBook: PropTypes.func.isRequired,
+  deleteBook: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
   author: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   coverUrl: PropTypes.string.isRequired,
