@@ -1,6 +1,5 @@
-Hello!
 
-<h1 style{{color: 'red'}}>Books Library - By Yonatan Itzhaky</h1>
+<h1 >Books Library - By Yonatan Itzhaky</h1>
 
 installation instructions:
 1. git clone https://github.com/Yonatani/booksLibrary.git
