@@ -83,11 +83,13 @@ class BooksLibrary extends Component {
     const {editableBook, validatedForm} = this.state;
     const actions = [
       <FlatButton
+        key={1}
         label="Cancel"
         primary={true}
         onClick={this.handleClose}
       />,
       <FlatButton
+        key={2}
         label="Submit"
         primary={true}
         disabled={!validatedForm}

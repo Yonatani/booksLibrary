@@ -54,8 +54,7 @@ class BooksService {
       .then(() => {
         return books;
       })
-      .catch((error) => {
-        console.log(`error: ${error}`);
+      .catch(() => {
       });
   };
 }
